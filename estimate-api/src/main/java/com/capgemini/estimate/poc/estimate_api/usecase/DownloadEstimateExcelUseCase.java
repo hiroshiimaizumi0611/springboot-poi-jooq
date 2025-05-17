@@ -26,10 +26,10 @@ public class DownloadEstimateExcelUseCase {
       header.createCell(1).setCellValue("タイトル");
       header.createCell(2).setCellValue("顧客名");
       header.createCell(3).setCellValue("合計金額");
-
-      for (int i = 0; i < estimates.size(); i++) {
-        Estimate e = estimates.get(i);
-        Row row = sheet.createRow(i + 1);
+        
+      int index = 1;
+      for (Estimate e : estimates) {
+        Row row = sheet.createRow(index++);
         row.createCell(0).setCellValue(e.id());
         row.createCell(1).setCellValue(e.title());
         row.createCell(2).setCellValue(e.customerName());
