@@ -1,0 +1,12 @@
+server:
+    port: 8080
+    error:
+        whitelabel:
+            enabled: false
+
+spring:
+    application:
+        name: estimate-api
+    autoconfigure:
+        exclude:
+            - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
