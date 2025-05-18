@@ -1,3 +1,12 @@
 package com.capgemini.estimate.poc.estimate_api.domain;
 
-public record Estimate(Long id, String title, String customerName, int totalAmount) {}
+import org.seasar.doma.Entity;
+import org.seasar.doma.Id;
+
+@Entity
+public class Estimate {
+  @Id public Long id;
+  public String title;
+  public String customerName;
+  public Integer totalAmount;
+}

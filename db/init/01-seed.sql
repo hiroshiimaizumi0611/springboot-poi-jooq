@@ -1,0 +1,12 @@
+ALTER SESSION SET CONTAINER = FREEPDB1;
+ALTER SESSION SET CURRENT_SCHEMA = APP;
+
+CREATE TABLE estimate (
+  id NUMBER PRIMARY KEY,
+  title VARCHAR2(255),
+  customer_name VARCHAR2(255),
+  total_amount NUMBER
+);
+
+INSERT INTO estimate VALUES (1, '2025年度 サーバ見積', '株式会社A', 100000);
+INSERT INTO estimate VALUES (2, 'NW更新案件', '株式会社B', 200000);
