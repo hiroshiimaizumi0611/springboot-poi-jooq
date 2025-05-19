@@ -1,7 +1,8 @@
 package com.capgemini.estimate.poc.estimate_api.usecase;
 
-import com.capgemini.estimate.poc.estimate_api.domain.Estimate;
-import com.capgemini.estimate.poc.estimate_api.repository.EstimateRepository;
+import com.capgemini.estimate.poc.estimate_api.domain.model.Estimate;
+import com.capgemini.estimate.poc.estimate_api.domain.repository.EstimateRepository;
+
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 import org.apache.poi.ss.usermodel.*;

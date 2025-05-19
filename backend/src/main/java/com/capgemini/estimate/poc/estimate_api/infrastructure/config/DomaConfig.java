@@ -1,4 +1,4 @@
-package com.capgemini.estimate.poc.estimate_api.infrastructure.persistence;
+package com.capgemini.estimate.poc.estimate_api.infrastructure.config;
 
 import javax.sql.DataSource;
 import org.seasar.doma.jdbc.Config;

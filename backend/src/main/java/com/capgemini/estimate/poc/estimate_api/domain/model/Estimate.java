@@ -1,4 +1,4 @@
-package com.capgemini.estimate.poc.estimate_api.domain;
+package com.capgemini.estimate.poc.estimate_api.domain.model;
 
 import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
