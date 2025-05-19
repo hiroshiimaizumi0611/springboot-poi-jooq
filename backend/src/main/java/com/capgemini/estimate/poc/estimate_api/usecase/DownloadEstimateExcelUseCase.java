@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DownloadEstimateExcelUseCase {
 
-  @Autowired
-  private final EstimateRepository repository;
+  @Autowired private final EstimateRepository repository;
 
   public DownloadEstimateExcelUseCase(EstimateRepository repository) {
     this.repository = repository;

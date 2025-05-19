@@ -1,7 +1,6 @@
 package com.capgemini.estimate.poc.estimate_api.infrastructure.persistence;
 
 import javax.sql.DataSource;
-
 import org.seasar.doma.jdbc.Config;
 import org.seasar.doma.jdbc.Naming;
 import org.seasar.doma.jdbc.dialect.Dialect;
@@ -14,31 +13,31 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 @Configuration
 public class DomaConfig implements Config {
 
-    private final DataSource dataSource;
-    private final Dialect dialect;
+  private final DataSource dataSource;
+  private final Dialect dialect;
 
-    public DomaConfig(DataSource dataSource) {
-        this.dataSource = new TransactionAwareDataSourceProxy(dataSource);
-        this.dialect = new OracleDialect();
-    }
+  public DomaConfig(DataSource dataSource) {
+    this.dataSource = new TransactionAwareDataSourceProxy(dataSource);
+    this.dialect = new OracleDialect();
+  }
 
-    @Override
-    public DataSource getDataSource() {
-        return this.dataSource;
-    }
+  @Override
+  public DataSource getDataSource() {
+    return this.dataSource;
+  }
 
-    @Override
-    public Dialect getDialect() {
-        return this.dialect;
-    }
+  @Override
+  public Dialect getDialect() {
+    return this.dialect;
+  }
 
-    @Override
-    public Naming getNaming() {
-        return Naming.SNAKE_UPPER_CASE;
-    }
+  @Override
+  public Naming getNaming() {
+    return Naming.SNAKE_UPPER_CASE;
+  }
 
-    @Bean
-    DataSourceTransactionManager transactionManager(DataSource actualDataSource) {
-        return new DataSourceTransactionManager(actualDataSource);
-    }
+  @Bean
+  DataSourceTransactionManager transactionManager(DataSource actualDataSource) {
+    return new DataSourceTransactionManager(actualDataSource);
+  }
 }
