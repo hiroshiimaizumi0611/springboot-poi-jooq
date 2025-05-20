@@ -22,3 +22,11 @@ services:
       - "8080:8080"
     depends_on:
       - oracle-db
+
+  frontend:
+    build: ./frontend
+    container_name: estimate-frontend
+    ports:
+      - "3000:80" # ホスト3000番でアクセス→コンテナnginxの80番
+    depends_on:
+      - backend
