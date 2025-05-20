@@ -1,7 +1,7 @@
 package com.capgemini.estimate.poc.estimate_api.infrastructure.repository;
 
-import com.capgemini.estimate.poc.estimate_api.domain.Estimate_;
 import com.capgemini.estimate.poc.estimate_api.domain.model.Estimate;
+import com.capgemini.estimate.poc.estimate_api.domain.model.Estimate_;
 import com.capgemini.estimate.poc.estimate_api.domain.repository.EstimateRepository;
 
 import java.util.List;
