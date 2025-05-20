@@ -14,7 +14,7 @@ public class EstimateController {
     this.useCase = useCase;
   }
 
-  @GetMapping("/excel")
+  @GetMapping("/download")
   public ResponseEntity<byte[]> downloadExcel() {
     byte[] file = useCase.execute();
     return ResponseEntity.ok()

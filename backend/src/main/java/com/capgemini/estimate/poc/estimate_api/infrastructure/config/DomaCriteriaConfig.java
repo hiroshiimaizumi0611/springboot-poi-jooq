@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DomaCriteriaConfig {
-    
-    @Bean
-    QueryDsl queryDsl(Config config) {
-        return new QueryDsl(config);
-    } 
+
+  @Bean
+  QueryDsl queryDsl(Config config) {
+    return new QueryDsl(config);
+  }
 }
