@@ -6,7 +6,6 @@ export async function downloadEstimatesExcel() {
     responseType: 'blob',
   })
 
-  // Content-Dispositionヘッダーからファイル名取得（なければ fallback）
   const disposition = response.headers['content-disposition']
   const fileName = disposition
     ? disposition.match(/filename="?(.+)"?/)?.[1] || 'estimates.xlsx'

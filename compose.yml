@@ -27,6 +27,6 @@ services:
     build: ./frontend
     container_name: estimate-frontend
     ports:
-      - "3000:80" # ホスト3000番でアクセス→コンテナnginxの80番
+      - "3000:80"
     depends_on:
       - backend
