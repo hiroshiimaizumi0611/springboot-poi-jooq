@@ -7,9 +7,7 @@ import './index.css'
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
-      <body className="flex flex-col justify-center">
-        <App />
-      </body>
+      <App />
     </BrowserRouter>
   </React.StrictMode>,
 )
