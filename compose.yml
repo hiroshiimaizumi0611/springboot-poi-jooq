@@ -13,7 +13,7 @@ services:
 
   backend:
     build: ./backend
-    container_name: estimate-backend
+    container_name: backend
     environment:
       - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
       - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
@@ -25,7 +25,7 @@ services:
 
   frontend:
     build: ./frontend
-    container_name: estimate-frontend
+    container_name: frontend
     ports:
       - "3000:80"
     depends_on:
@@ -33,7 +33,7 @@ services:
 
   redis:
     image: redis:7.2
-    container_name: estimate-redis
+    container_name: redis
     ports:
       - "6379:6379"
     volumes:
