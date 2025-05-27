@@ -1,5 +1,6 @@
 package com.capgemini.estimate.poc.estimate_api.auth;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import java.util.Date;
@@ -22,5 +23,15 @@ public class JwtUtil {
   public String getUsername(String token) {
     var key = Keys.hmacShaKeyFor(secret.getBytes());
     return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload().getSubject();
+  }
+
+  public boolean validateToken(String token) {
+    var key = Keys.hmacShaKeyFor(secret.getBytes());
+    try {
+      Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
+      return true;
+    } catch (JwtException e) {
+      return false;
+    }
   }
 }

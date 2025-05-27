@@ -22,7 +22,7 @@ public class AuthController {
   @Autowired private RedisTemplate<String, String> redisTemplate;
 
   @PostMapping("/login")
-  public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+  public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
     try {
       Authentication authentication =
           authenticationManager.authenticate(
@@ -32,16 +32,19 @@ public class AuthController {
       String token = jwtUtil.createToken(authentication.getName());
       // Redisにも保存
       redisTemplate.opsForValue().set(token, "valid");
-      return new LoginResponse(token);
+      return ResponseEntity.ok(new LoginResponse(token));
     } catch (AuthenticationException ex) {
       throw new RuntimeException("Invalid username or password");
     }
   }
 
   @PostMapping("/logout")
-  public ResponseEntity<Void> logout(@RequestHeader("Authorization") String authHeader) {
+  public ResponseEntity<Void> logout(
+      @RequestHeader(value = "Authorization", required = false) String authHeader) {
+    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+      return ResponseEntity.ok().build();
+    }
     String token = authHeader.replace("Bearer ", "");
-    // JWTに対応するRedisのキー名で消す（実装に合わせて）
     redisTemplate.delete(token);
     return ResponseEntity.ok().build();
   }

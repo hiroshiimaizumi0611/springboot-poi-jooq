@@ -11,8 +11,10 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private final JwtUtil jwtUtil;
   private final RedisTemplate<String, String> redisTemplate;
@@ -33,13 +35,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       String jwt = authHeader.substring(7);
       try {
         String username = jwtUtil.getUsername(jwt);
-        if (redisTemplate.hasKey(jwt)) {
+        boolean isValid = jwtUtil.validateToken(jwt);
+        boolean inWhitelist = Boolean.TRUE.equals(redisTemplate.hasKey(jwt));
+
+        if (isValid && inWhitelist) {
           UsernamePasswordAuthenticationToken authentication =
               new UsernamePasswordAuthenticationToken(username, null, List.of());
           authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
           SecurityContextHolder.getContext().setAuthentication(authentication);
+        } else {
+          response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+          return;
         }
       } catch (Exception e) {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        return;
       }
     }
     filterChain.doFilter(request, response);
