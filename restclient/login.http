@@ -9,11 +9,11 @@ Content-Type: application/json
 
 ### 認証API（要JWTトークン）
 GET http://localhost:8080/api/estimates/download
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImV4cCI6MTc0ODMzMjg1OX0.K9j2inGtI4rYW1dbHeQCt9M2dZ3Y8nxE8wTSIvmnuiA
+Authorization: Bearer 
 
 ### 認証API（トークン無し）
 GET http://localhost:8080/api/estimates/download
 
 ### 認証API（トークン無し）
 GET http://localhost:8080/api/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImV4cCI6MTc0ODMzMzY3NH0.2S2iVrdaI0Nru2WhbpuXtge0oB4tQlErGg9C2ckr7eQ
+Authorization: Bearer 
