@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtUtil {
   private final String secret = "this_is_a_very_long_random_secret_key_32byte!";
-  private final long expiration = 3600_000; // 1h
+  // private final long expiration = 3600_000; // 1h
+  private final long expiration = 60_000; // 1min
 
   public String createToken(String username) {
     var key = Keys.hmacShaKeyFor(secret.getBytes());
@@ -33,5 +34,14 @@ public class JwtUtil {
     } catch (JwtException e) {
       return false;
     }
+  }
+
+  public long getRemainingExpiration(String token) {
+    var key = Keys.hmacShaKeyFor(secret.getBytes());
+    Date expiration  = Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload().getExpiration();
+    long now = System.currentTimeMillis();
+    long remain = (expiration.getTime() - now) / 1000;
+
+    return Math.max(remain, 1);
   }
 }

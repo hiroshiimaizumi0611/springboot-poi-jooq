@@ -6,7 +6,7 @@ export function useAuth() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const token = localStorage.getItem('jwt_token')
+    const token = localStorage.getItem('accessToken')
     setIsAuthenticated(!!token)
     setLoading(false)
   }, [])

@@ -9,7 +9,7 @@ Content-Type: application/json
 
 ### 認証API（要JWTトークン）
 GET http://localhost:8080/api/estimates/download
-Authorization: Bearer 
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImV4cCI6MTc0ODQxODU0OH0.jqjtokUlnidDT9dz8IAwFrNzoJ6hCXQgaPACvz_sS9I
 
 ### 認証API（トークン無し）
 GET http://localhost:8080/api/estimates/download
@@ -17,3 +17,11 @@ GET http://localhost:8080/api/estimates/download
 ### 認証API（トークン無し）
 GET http://localhost:8080/api/logout
 Authorization: Bearer 
+
+### ログインAPI（POST /api/login）
+POST http://localhost:8080/api/refresh
+Content-Type: application/json
+
+{
+"refreshToken": "509adfd8-5fa7-4517-bb6b-3947f9a7a591"
+}

@@ -36,9 +36,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       try {
         String username = jwtUtil.getUsername(jwt);
         boolean isValid = jwtUtil.validateToken(jwt);
-        boolean inWhitelist = Boolean.TRUE.equals(redisTemplate.hasKey(jwt));
-
-        if (isValid && inWhitelist) {
+        boolean isBlacklisted = Boolean.TRUE.equals(redisTemplate.hasKey("BLACKLIST:" + jwt));
+        if (isValid && !isBlacklisted) {
           UsernamePasswordAuthenticationToken authentication =
               new UsernamePasswordAuthenticationToken(username, null, List.of());
           authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

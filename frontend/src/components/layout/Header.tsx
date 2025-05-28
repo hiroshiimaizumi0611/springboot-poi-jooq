@@ -4,7 +4,6 @@ import { Button } from '../ui/button'
 
 const logoutFunc = async () => {
   await logout()
-  window.location.href = '/login'
 }
 
 export const Header = () => (

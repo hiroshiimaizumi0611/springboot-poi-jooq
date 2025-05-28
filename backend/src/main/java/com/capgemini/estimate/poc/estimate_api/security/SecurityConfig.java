@@ -29,12 +29,8 @@ public class SecurityConfig {
         .formLogin(formLogin -> formLogin.disable())
         .authorizeHttpRequests(
             auth ->
-                auth.requestMatchers("/api/login")
-                    .permitAll()
-                    .requestMatchers("/api/logout")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated())
+                auth.requestMatchers("/api/login","/api/logout","/api/refresh").permitAll()
+                    .anyRequest().authenticated())
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
   }
