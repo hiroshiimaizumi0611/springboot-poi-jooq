@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EstimateRepository {
   List<Estimate> selectAll();
+
+  void insert(Estimate estimate);
 }

@@ -21,4 +21,11 @@ public class EstimateRepositoryImpl implements EstimateRepository {
 
     return queryDsl.from(e).fetch();
   }
+
+  @Override
+  public void insert(Estimate estimate) {
+    var e = new Estimate_();
+
+    queryDsl.insert(e).single(estimate).execute();
+  }
 }

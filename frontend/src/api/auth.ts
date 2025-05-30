@@ -1,4 +1,5 @@
 import { api } from "../lib/axios";
+import { useAuthStore } from "../store/authStore";
 
 export interface LoginResponse {
 	accessToken: string;
@@ -12,6 +13,7 @@ export async function login(username: string, password: string): Promise<void> {
 	});
 	localStorage.setItem("accessToken", res.data.accessToken);
 	localStorage.setItem("refreshToken", res.data.refreshToken);
+	useAuthStore.getState().setIsAuthenticated(true);
 }
 
 export async function logout(): Promise<void> {
@@ -28,5 +30,6 @@ export async function logout(): Promise<void> {
 	);
 	localStorage.removeItem("accessToken");
 	localStorage.removeItem("refreshToken");
+	useAuthStore.getState().setIsAuthenticated(false);
 	window.location.href = "/login";
 }

@@ -1,15 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useAuthStore } from "../store/authStore";
 
 // 必要なら型を拡張
 export function useAuth() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken')
-    setIsAuthenticated(!!token)
-    setLoading(false)
-  }, [])
-
-  return { isAuthenticated, loading }
+	const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+	return { isAuthenticated };
 }

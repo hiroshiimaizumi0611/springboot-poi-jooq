@@ -1,18 +1,40 @@
-import { Download } from 'lucide-react'
-import { downloadEstimatesExcel } from '../api/estimate'
-import { Button } from '../components/ui/button'
+import { Download, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { downloadEstimatesExcel } from "../api/estimate";
+import { Button } from "../components/ui/button";
 
 export const EstimatePage = () => {
-  return (
-    <div className="flex items-center justify-center h-full text-2xl text-gray-400">
-      <Button
-        size="lg"
-        className="flex w-auto"
-        onClick={downloadEstimatesExcel}
-      >
-        <Download className="mr-2 h-4 w-4" />
-        ESTIMATE DOWNLOAD
-      </Button>
-    </div>
-  )
-}
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
+
+	const handleDownload = async () => {
+		setError(null);
+		setLoading(true);
+		try {
+			await downloadEstimatesExcel();
+		} catch (e) {
+			setError("ダウンロードに失敗しました。");
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	return (
+		<div className="flex flex-col items-center justify-center h-full min-h-[60vh]">
+			<Button
+				size="lg"
+				className="flex items-center gap-2 w-auto"
+				onClick={handleDownload}
+				disabled={loading}
+			>
+				{loading ? (
+					<Loader2 className="h-5 w-5 animate-spin" />
+				) : (
+					<Download className="mr-1 h-5 w-5" />
+				)}
+				{loading ? "DOWNLOADING..." : "ESTIMATE DOWNLOAD"}
+			</Button>
+			{error && <div className="mt-4 text-red-400">{error}</div>}
+		</div>
+	);
+};

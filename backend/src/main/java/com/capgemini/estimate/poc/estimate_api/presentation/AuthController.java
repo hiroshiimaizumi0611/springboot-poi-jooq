@@ -5,11 +5,9 @@ import com.capgemini.estimate.poc.estimate_api.domain.model.LoginRequest;
 import com.capgemini.estimate.poc.estimate_api.domain.model.LoginResponse;
 import com.capgemini.estimate.poc.estimate_api.domain.model.LogoutRequest;
 import com.capgemini.estimate.poc.estimate_api.domain.model.RefreshRequest;
-
 import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +29,7 @@ public class AuthController {
 
   @Autowired private RedisTemplate<String, String> redisTemplate;
 
-  final static Logger logger = LoggerFactory.getLogger(AuthController.class);
+  static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
   @PostMapping("/login")
   public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
@@ -46,7 +44,7 @@ public class AuthController {
 
       // Redisにも保存
       redisTemplate.opsForValue().set(refreshToken, authentication.getName(), Duration.ofDays(1));
-      return ResponseEntity.ok(new LoginResponse(accessToken,refreshToken));
+      return ResponseEntity.ok(new LoginResponse(accessToken, refreshToken));
     } catch (AuthenticationException ex) {
       throw new RuntimeException("Invalid username or password");
     }
@@ -55,26 +53,26 @@ public class AuthController {
   @PostMapping("/logout")
   public ResponseEntity<Void> logout(
       @RequestHeader(value = "Authorization", required = false) String authHeader,
-        @RequestBody(required = false) LogoutRequest req) {
+      @RequestBody(required = false) LogoutRequest req) {
     if (authHeader != null && authHeader.startsWith("Bearer ")) {
       String jwt = authHeader.substring(7);
-        long ttl = jwtUtil.getRemainingExpiration(jwt);
-        redisTemplate.opsForValue().set("BLACKLIST:" + jwt, "true", ttl, TimeUnit.SECONDS);
+      long ttl = jwtUtil.getRemainingExpiration(jwt);
+      redisTemplate.opsForValue().set("BLACKLIST:" + jwt, "true", ttl, TimeUnit.SECONDS);
     }
-    
+
     if (req != null && req.getRefreshToken() != null) {
-        redisTemplate.delete(req.getRefreshToken());
+      redisTemplate.delete(req.getRefreshToken());
     }
     return ResponseEntity.ok().build();
   }
 
-@PostMapping("/refresh")
-public ResponseEntity<LoginResponse> refresh(@RequestBody RefreshRequest req) {
+  @PostMapping("/refresh")
+  public ResponseEntity<LoginResponse> refresh(@RequestBody RefreshRequest req) {
     String refreshToken = req.getRefreshToken();
     String username = redisTemplate.opsForValue().get(refreshToken);
 
     if (username == null) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     String newAccessToken = jwtUtil.createToken(username);
@@ -84,5 +82,5 @@ public ResponseEntity<LoginResponse> refresh(@RequestBody RefreshRequest req) {
     redisTemplate.opsForValue().set(newRefreshToken, username, Duration.ofDays(1));
 
     return ResponseEntity.ok(new LoginResponse(newAccessToken, newRefreshToken));
-}
+  }
 }
