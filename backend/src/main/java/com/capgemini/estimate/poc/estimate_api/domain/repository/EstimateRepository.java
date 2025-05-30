@@ -9,4 +9,8 @@ public interface EstimateRepository {
   List<Estimate> selectAll();
 
   void insert(Estimate estimate);
+
+  void delete(String id);
+
+  void update(Estimate estimate);
 }

@@ -1,7 +1,8 @@
 import { Route, Routes } from 'react-router-dom'
 import RequireAuth from '../components/auth/RequireAuth'
 import { AppLayout } from '../components/layout/AppLayout'
-import { EstimatePage } from '../pages/EstimatePage'
+import { EstimateDownloadPage } from '../pages/EstimateDownloadPage'
+import { Estimates } from '../pages/Estimates'
 import { HomePage } from '../pages/HomePage'
 import LoginPage from '../pages/LoginPage'
 
@@ -18,7 +19,8 @@ export default function AppRoutes() {
         }
       >
         <Route index element={<HomePage />} />
-        <Route path="estimate" element={<EstimatePage />} />
+        <Route path="estimateDownload" element={<EstimateDownloadPage />} />
+        <Route path="estimates" element={<Estimates />} />
       </Route>
     </Routes>
   )

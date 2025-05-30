@@ -6,9 +6,6 @@ import com.capgemini.estimate.poc.estimate_api.usecase.EstimateUseCase;
 import java.util.List;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/estimates")
@@ -39,6 +36,16 @@ public class EstimateController {
 
   @PostMapping
   public void addEstimate(@RequestBody Estimate estimate) {
-    estimateUseCase.addEstimate(estimate);
+    estimateUseCase.insertEstimate(estimate);
+  }
+
+  @DeleteMapping("/{id}")
+  public void deleteEstimate(@PathVariable String id) {
+    estimateUseCase.deleteEstimate(id);
+  }
+
+  @PutMapping("/{id}")
+  public void deleteEstimate(@PathVariable String id, @RequestBody Estimate estimate) {
+    estimateUseCase.updateEstimate(estimate);
   }
 }

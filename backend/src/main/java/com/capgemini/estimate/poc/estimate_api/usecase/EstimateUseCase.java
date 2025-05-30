@@ -19,7 +19,15 @@ public class EstimateUseCase {
     return repository.selectAll();
   }
 
-  public void addEstimate(Estimate estimate) {
+  public void insertEstimate(Estimate estimate) {
     repository.insert(estimate);
+  }
+
+  public void deleteEstimate(String id) {
+    repository.delete(id);
+  }
+
+  public void updateEstimate(Estimate estimate) {
+    repository.update(estimate);
   }
 }

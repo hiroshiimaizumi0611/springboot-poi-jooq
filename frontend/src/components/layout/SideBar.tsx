@@ -24,16 +24,18 @@ export const SideBar = () => (
           ホーム
         </Button>
       </Link>
-      <Link to="/estimate" className="mr-4">
+      <Link to="/estimateDownload" className="mr-4">
         <Button variant="secoundary" className="justify-start w-full">
           <Download className="mr-3 h-5 w-5" />
           ダウンロード
         </Button>
       </Link>
-      <Button variant="ghost" className="justify-start w-full">
-        <FileText className="mr-3 h-5 w-5" />
-        見積管理
-      </Button>
+      <Link to="/estimates" className="mr-4">
+        <Button variant="secoundary" className="justify-start w-full">
+          <FileText className="mr-3 h-5 w-5" />
+          見積管理
+        </Button>
+      </Link>
       <Button variant="ghost" className="justify-start w-full">
         <ChevronRight className="mr-3 h-5 w-5" />
         受注一覧
