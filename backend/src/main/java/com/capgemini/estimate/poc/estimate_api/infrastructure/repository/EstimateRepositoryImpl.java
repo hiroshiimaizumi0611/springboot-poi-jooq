@@ -49,4 +49,11 @@ public class EstimateRepositoryImpl implements EstimateRepository {
     _estimate.totalAmount = estimate.totalAmount;
     queryDsl.update(e).single(estimate).execute();
   }
+
+  @Override
+  public Estimate selectById(String id) {
+    var e = new Estimate_();
+
+    return queryDsl.from(e).where(c -> c.eq(e.id, id)).fetchOne();
+  }
 }

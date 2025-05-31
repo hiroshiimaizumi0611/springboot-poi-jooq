@@ -34,6 +34,11 @@ public class EstimateController {
     return estimateUseCase.getAllEstimates();
   }
 
+  @GetMapping("/{id}")
+  public Estimate getEstimate(@PathVariable String id) {
+    return estimateUseCase.getEstimate(id);
+  }
+
   @PostMapping
   public void addEstimate(@RequestBody Estimate estimate) {
     estimateUseCase.insertEstimate(estimate);

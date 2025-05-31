@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 public interface EstimateRepository {
   List<Estimate> selectAll();
 
+  Estimate selectById(String id);
+
   void insert(Estimate estimate);
 
   void delete(String id);

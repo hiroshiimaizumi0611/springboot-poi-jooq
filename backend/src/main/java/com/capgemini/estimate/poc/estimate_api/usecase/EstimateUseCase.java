@@ -19,6 +19,10 @@ public class EstimateUseCase {
     return repository.selectAll();
   }
 
+  public Estimate getEstimate(String id) {
+    return repository.selectById(id);
+  }
+
   public void insertEstimate(Estimate estimate) {
     repository.insert(estimate);
   }

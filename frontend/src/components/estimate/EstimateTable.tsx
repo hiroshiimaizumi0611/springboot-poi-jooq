@@ -18,31 +18,33 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
-} from "../../components/ui/alert-dialog";
+} from '../../components/ui/alert-dialog'
 import { Loader2, Pencil, Trash2 } from 'lucide-react'
 import { deleteEstimate } from '../../api/estimate'
+import { useNavigate } from 'react-router-dom'
 
 interface Props {
   estimates: Estimate[]
-  onEdit: (estimate: Estimate) => void;
-  onDeleted?: () => void
+  onDeleted: () => void
 }
 
-export function EstimateTable({ estimates, onEdit,onDeleted }: Props) {
-  const [targetId, setTargetId] = useState<string | null>(null);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+export function EstimateTable({ estimates, onDeleted }: Props) {
+  const navigate = useNavigate()
+
+  const [targetId, setTargetId] = useState<string | null>(null)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   const handleDelete = async () => {
-    if (targetId == null) return;
-    setDeletingId(targetId);
+    if (targetId == null) return
+    setDeletingId(targetId)
     try {
-      await deleteEstimate(targetId);
-      onDeleted?.();
+      await deleteEstimate(targetId)
+      onDeleted()
     } finally {
-      setDeletingId(null);
-      setTargetId(null); 
+      setDeletingId(null)
+      setTargetId(null)
     }
-  };
+  }
 
   return (
     <Table className="shadow-xl rounded-lg border border-gray-200 overflow-hidden">
@@ -66,19 +68,19 @@ export function EstimateTable({ estimates, onEdit,onDeleted }: Props) {
             <TableCell className="text-right text-blue-700 font-semibold">
               {e.totalAmount?.toLocaleString()}円
             </TableCell>
-			<TableCell className="w-12">
+            <TableCell className="w-12">
               <button
-                onClick={() => onEdit(e)}
+                onClick={() => navigate(`/estimates/${e.id}/edit`)}
                 className="p-1 text-blue-600 hover:text-blue-800"
                 title="編集"
               >
                 <Pencil className="h-4 w-4" />
               </button>
             </TableCell>
-			<TableCell className="text-center w-16">
+            <TableCell className="text-center w-16">
               <AlertDialog
                 open={targetId === e.id}
-                onOpenChange={(open) => setTargetId(open ? e.id! : null)}
+                onOpenChange={open => setTargetId(open ? e.id! : null)}
               >
                 <AlertDialogTrigger asChild>
                   <button
