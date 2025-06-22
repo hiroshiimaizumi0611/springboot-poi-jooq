@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/your-org/my-mono-repo.git
+    repoURL: https://github.com/hiroshiimaizumi0611/springboot-poi-jooq.git
     targetRevision: main
     path: backend/helm-chart
     helm:
