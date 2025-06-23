@@ -9,6 +9,10 @@ service:
   type: ClusterIP
   port: 80
 
+env:
+  BACKEND_HOST: backend.backend.svc.cluster.local
+  BACKEND_PORT: "8080"
+
 ingress:
   enabled: true
   annotations:
