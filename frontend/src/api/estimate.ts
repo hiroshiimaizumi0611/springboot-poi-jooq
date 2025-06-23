@@ -3,7 +3,7 @@ import { downloadBlob } from '../lib/download'
 import type { Estimate } from '../types/Estimate'
 
 export async function downloadEstimatesExcel(): Promise<void> {
-  const response = await api.get('/api/estimates/download', {
+  const response = await api.get('/estimates/download', {
     responseType: 'blob',
   })
 
@@ -16,23 +16,23 @@ export async function downloadEstimatesExcel(): Promise<void> {
 }
 
 export async function getEstimates(): Promise<Estimate[]> {
-  const res = await api.get<Estimate[]>('/api/estimates')
+  const res = await api.get<Estimate[]>('/estimates')
   return res.data
 }
 
 export async function getEstimate(id: string): Promise<Estimate> {
-  const res = await api.get<Estimate>(`/api/estimates/${id}`)
+  const res = await api.get<Estimate>(`/estimates/${id}`)
   return res.data
 }
 
 export async function addEstimate(estimate: Omit<Estimate, 'id'>) {
-  await api.post('/api/estimates', estimate)
+  await api.post('/estimates', estimate)
 }
 
 export async function deleteEstimate(id: string) {
-  await api.delete(`/api/estimates/${id}`)
+  await api.delete(`/estimates/${id}`)
 }
 
 export async function updateEstimate(estimate: Estimate) {
-  await api.put(`/api/estimates/${estimate.id}`, estimate)
+  await api.put(`/estimates/${estimate.id}`, estimate)
 }

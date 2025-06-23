@@ -4,7 +4,7 @@ import { getEstimate } from '../api/estimate'
 
 export function useEstimate(id: string) {
   const { data, error, isLoading, mutate } = useSWR<Estimate>(
-    `/api/estimates/${id}`,
+    `/estimates/${id}`,
     () => getEstimate(id),
   )
   return { estimate: data, error, isLoading, mutate }

@@ -7,7 +7,7 @@ export interface LoginResponse {
 }
 
 export async function login(username: string, password: string): Promise<void> {
-  const res = await api.post<LoginResponse>('/api/login', {
+  const res = await api.post<LoginResponse>('/login', {
     username,
     password,
   })
@@ -20,7 +20,7 @@ export async function logout(): Promise<void> {
   const refreshToken = localStorage.getItem('refreshToken')
   const accessToken = localStorage.getItem('accessToken')
   await api.post(
-    '/api/logout',
+    '/logout',
     { refreshToken },
     {
       headers: {

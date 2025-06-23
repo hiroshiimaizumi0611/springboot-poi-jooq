@@ -4,7 +4,7 @@ import type { Estimate } from '../types/Estimate'
 
 export function useEstimates() {
   const { data, error, isLoading, mutate } = useSWR<Estimate[]>(
-    '/api/estimates',
+    '/estimates',
     getEstimates,
   )
   return {

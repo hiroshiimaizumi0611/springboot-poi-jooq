@@ -63,7 +63,7 @@ export function EstimateFormDialog({
       } else {
         await addEstimate(form)
       }
-      await globalMutate('/api/estimates', undefined, { revalidate: true })
+      await globalMutate('/estimates', undefined, { revalidate: true })
       onOpenChange(false)
     } catch {
       setError(isEdit ? '更新に失敗しました' : '追加に失敗しました')

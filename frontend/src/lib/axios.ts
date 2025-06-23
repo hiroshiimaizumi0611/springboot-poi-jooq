@@ -2,7 +2,7 @@ import axios from 'axios'
 import type { LoginResponse } from '../api/auth'
 
 export const api = axios.create({
-  baseURL: import.meta.env.API_BASE_URL || 'http://localhost:8080/',
+  baseURL: '/api/',
   withCredentials: true,
 })
 
