@@ -11,5 +11,5 @@ spec:
       auth:
         jwt:
           serviceAccountRef:
-            name: external-secrets
+            name: backend
             namespace: backend
