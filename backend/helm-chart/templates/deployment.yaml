@@ -18,6 +18,10 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8080
+          envFrom:
+            - secretRef:
+                # external-secrets.yaml の target.name で指定した名前
+                name: {{ .Release.Name }}-secrets
           env:
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
