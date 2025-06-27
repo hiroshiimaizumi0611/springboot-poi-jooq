@@ -1,5 +1,5 @@
 apiVersion: external-secrets.io/v1
-kind: SecretStore
+kind: ClusterSecretStore
 metadata:
   name: aws-secretsmanager
   namespace: backend
@@ -11,5 +11,5 @@ spec:
       auth:
         jwt:
           serviceAccountRef:
-            name: backend
-            namespace: backend
+            name: external-secrets-operator
+            namespace: external-secrets
