@@ -12,7 +12,9 @@ service:
 ## アプリ環境変数（↑ Deployment にマッピング）
 env:
   SPRING_PROFILES_ACTIVE: prod
-  SPRING_DATASOURCE_URL: jdbc:oracle:thin:@oracle-db.<your-subnet>.ap-northeast-1.rds.amazonaws.com:1521/ORCL
-  SPRING_DATASOURCE_USERNAME: admin
-  SPRING_DATASOURCE_PASSWORD: YOUR_PASSWORD # 後で k8s Secret 化推奨
-  REDIS_URL: redis://serverless-redis:6379
+  DB_HOST: ${DB_HOST}
+  DB_USERNAME: ${DB_USERNAME}
+  DB_PASSWORD: ${DB_PASSWORD} # 後で k8s Secret 化推奨
+  REDIS_HOST: ${REDIS_HOST}
+  REDIS_PORT: ${REDIS_PORT}
+  REDIS_PASSWORD: ${REDIS_PASSWORD}
