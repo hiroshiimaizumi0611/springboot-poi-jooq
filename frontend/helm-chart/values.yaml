@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: 635566485987.dkr.ecr.ap-northeast-1.amazonaws.com/react-nginx
-  tag: v4
+  tag: v5
   pullPolicy: IfNotPresent
 
 service:
@@ -21,6 +21,6 @@ ingress:
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
   hosts:
-    - host: ""
-      paths:
-        - /
+  - host: ""
+    paths:
+    - /
