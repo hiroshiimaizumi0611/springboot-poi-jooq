@@ -10,11 +10,11 @@ service:
   port: 8080
 
 ## アプリ環境変数（↑ Deployment にマッピング）
-env:
-  SPRING_PROFILES_ACTIVE: prod
-  DB_HOST: ${DB_HOST}
-  DB_USERNAME: ${DB_USERNAME}
-  DB_PASSWORD: ${DB_PASSWORD} # 後で k8s Secret 化推奨
-  REDIS_HOST: ${REDIS_HOST}
-  REDIS_PORT: ${REDIS_PORT}
-  REDIS_PASSWORD: ${REDIS_PASSWORD}
+# env:
+#   SPRING_PROFILES_ACTIVE: prod
+#   DB_HOST: ${DB_HOST}
+#   DB_USERNAME: ${DB_USERNAME}
+#   DB_PASSWORD: ${DB_PASSWORD} # 後で k8s Secret 化推奨
+#   REDIS_HOST: ${REDIS_HOST}
+#   REDIS_PORT: ${REDIS_PORT}
+#   REDIS_PASSWORD: ${REDIS_PASSWORD}
