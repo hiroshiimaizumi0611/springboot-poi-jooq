@@ -22,7 +22,7 @@ dependencies {
     implementation("org.seasar.doma.boot:doma-spring-boot-starter:1.6.0")
     implementation("org.seasar.doma:doma-core:3.8.0")
     annotationProcessor("org.seasar.doma:doma-processor:3.8.0")
-    runtimeOnly("com.oracle.database.jdbc:ojdbc11") 
+    runtimeOnly("com.oracle.database.jdbc:ojdbc11:21.11.0.0") 
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
