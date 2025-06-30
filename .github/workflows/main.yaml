@@ -1,0 +1,78 @@
+name: CI/CD MonoRepo with Helm Values Update
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-push-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. チェックアウト
+      - uses: actions/checkout@v4
+
+      # 2. 差分検知
+      - name: Detect changes
+        id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+            frontend:
+              - 'frontend/**'
+
+      # 3. AWS/ECR認証
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+        # 4. バージョン（タグ）自動生成例（コミットハッシュの先頭7桁など）
+      - name: Set image tag
+        id: version
+        run: echo "TAG=$(git rev-parse --short=7 HEAD)" >> $GITHUB_ENV
+
+      # 5. Backend ビルド・push・Helm values.yaml更新
+      - name: Build & Push backend, update values.yaml
+        if: steps.changes.outputs.backend == 'true'
+        env:
+          ECR_REPO: 635566485987.dkr.ecr.ap-northeast-1.amazonaws.com/springboot-api
+          TAG: ${{ env.TAG }}
+        run: |
+          cd backend
+          docker build -t $ECR_REPO:$TAG .
+          docker push $ECR_REPO:$TAG
+          # values.yamlのtagを書き換え
+          sed -i "s/^  tag: .*/  tag: $TAG/" helm-chart/values.yaml
+          cd ..
+
+      # 6. Frontend ビルド・push・Helm values.yaml更新
+      - name: Build & Push frontend, update values.yaml
+        if: steps.changes.outputs.frontend == 'true'
+        env:
+          ECR_REPO: 635566485987.dkr.ecr.ap-northeast-1.amazonaws.com/react-nginx
+          TAG: ${{ env.TAG }}
+        run: |
+          cd frontend
+          docker build -t $ECR_REPO:$TAG .
+          docker push $ECR_REPO:$TAG
+          # values.yamlのtagを書き換え
+          sed -i "s/^  tag: .*/  tag: $TAG/" helm-chart/values.yaml
+          cd ..
+
+      # 7. 変更があればpush（mainブランチに直接コミット、必要ならPRにしてもOK）
+      - name: Commit and push updated Helm values.yaml
+        if: steps.changes.outputs.backend == 'true' || steps.changes.outputs.frontend == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add backend/helm-chart/values.yaml frontend/helm-chart/values.yaml || true
+          git commit -m "chore: update image tag(s) [skip ci]" || true
+          git push origin main
