@@ -27,7 +27,6 @@ spec:
             - name: {{ $key }}
               value: "{{ $value }}"
             {{- end }}
-          # 例：メモリー制限を付けたい場合は↓を追加
           # resources:
           #   limits:
           #     memory: "1024Mi"
