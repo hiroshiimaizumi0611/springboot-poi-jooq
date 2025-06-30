@@ -7,13 +7,18 @@ export interface LoginResponse {
 }
 
 export async function login(username: string, password: string): Promise<void> {
-  const res = await api.post<LoginResponse>('/login', {
-    username,
-    password,
-  })
-  localStorage.setItem('accessToken', res.data.accessToken)
-  localStorage.setItem('refreshToken', res.data.refreshToken)
-  useAuthStore.getState().setIsAuthenticated(true)
+  try{
+    const res = await api.post<LoginResponse>('/login', {
+      username,
+      password,
+    })
+  
+    localStorage.setItem('accessToken', res.data.accessToken)
+    localStorage.setItem('refreshToken', res.data.refreshToken)
+    useAuthStore.getState().setIsAuthenticated(true)
+  } catch (error: any) {
+    throw error.response?.data
+  }
 }
 
 export async function logout(): Promise<void> {

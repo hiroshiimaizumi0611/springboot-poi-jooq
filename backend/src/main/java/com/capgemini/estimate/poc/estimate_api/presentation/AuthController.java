@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,21 +32,17 @@ public class AuthController {
 
   @PostMapping("/login")
   public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-    try {
-      Authentication authentication =
-          authenticationManager.authenticate(
-              new UsernamePasswordAuthenticationToken(
-                  loginRequest.getUsername(), loginRequest.getPassword()));
-      // JWT生成
-      String accessToken = jwtUtil.createToken(authentication.getName());
-      String refreshToken = UUID.randomUUID().toString();
+    Authentication authentication =
+        authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                loginRequest.getUsername(), loginRequest.getPassword()));
+    // JWT生成
+    String accessToken = jwtUtil.createToken(authentication.getName());
+    String refreshToken = UUID.randomUUID().toString();
 
-      // Redisにも保存
-      redisTemplate.opsForValue().set(refreshToken, authentication.getName(), Duration.ofDays(1));
-      return ResponseEntity.ok(new LoginResponse(accessToken, refreshToken));
-    } catch (AuthenticationException ex) {
-      throw new RuntimeException("Invalid username or password");
-    }
+    // Redisにも保存
+    redisTemplate.opsForValue().set(refreshToken, authentication.getName(), Duration.ofDays(1));
+    return ResponseEntity.ok(new LoginResponse(accessToken, refreshToken));
   }
 
   @PostMapping("/logout")

@@ -19,8 +19,8 @@ export default function LoginForm() {
     try {
       await login(username, password)
       navigate('/')
-    } catch {
-      setError('Invalid username or password')
+    } catch (error: any) {
+      setError(error?.detail || 'Login failed')
     } finally {
       setLoading(false);
     }
