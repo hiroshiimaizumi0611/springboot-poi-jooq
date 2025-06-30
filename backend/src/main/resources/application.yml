@@ -19,4 +19,4 @@ spring:
             username: ${REDIS_USERNAME}
             password: ${REDIS_PASSWORD}
             ssl: 
-                enabled: true
+                enabled: ${REDIS_SSL_ENABLED}
