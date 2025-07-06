@@ -5,19 +5,25 @@ import com.capgemini.estimate.poc.estimate_api.domain.model.LoginRequest;
 import com.capgemini.estimate.poc.estimate_api.domain.model.LoginResponse;
 import com.capgemini.estimate.poc.estimate_api.domain.model.LogoutRequest;
 import com.capgemini.estimate.poc.estimate_api.domain.model.RefreshRequest;
+import com.nimbusds.jwt.SignedJWT;
 import java.time.Duration;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/api")
@@ -77,5 +83,47 @@ public class AuthController {
     redisTemplate.opsForValue().set(newRefreshToken, username, Duration.ofDays(1));
 
     return ResponseEntity.ok(new LoginResponse(newAccessToken, newRefreshToken));
+  }
+
+  private final String clientId = "7n3n3u8mvl07ptvtskoussnm1f";
+  private final String redirectUri = "https://estimate-app.com/callback";
+  private final String tokenEndpoint =
+      "https://estimate-app.auth.ap-northeast-1.amazoncognito.com/oauth2/token";
+
+  @PostMapping("/callback")
+  public ResponseEntity<?> handleCognitoCallback(@RequestParam("code") String code) {
+    // ① code からトークン取得
+    RestTemplate restTemplate = new RestTemplate();
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+    String requestBody =
+        String.format(
+            "grant_type=authorization_code&client_id=%s&code=%s&redirect_uri=%s",
+            clientId, code, redirectUri);
+
+    HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+
+    var response = restTemplate.postForEntity(tokenEndpoint, entity, Map.class);
+    if (!response.getStatusCode().is2xxSuccessful()) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Failed to get tokens");
+    }
+    var tokenResponse = response.getBody();
+    String idToken = (String) tokenResponse.get("id_token");
+
+    // ② 署名検証せず、ペイロードのみ取り出し
+    Map<String, Object> userInfo = parseIdTokenWithoutVerify(idToken);
+
+    return ResponseEntity.ok(userInfo);
+  }
+
+  // 署名検証せずデコードだけする
+  public Map<String, Object> parseIdTokenWithoutVerify(String idToken) {
+    try {
+      SignedJWT jwt = SignedJWT.parse(idToken);
+      return jwt.getJWTClaimsSet().getClaims();
+    } catch (Exception e) {
+      throw new RuntimeException("IDトークンパース失敗", e);
+    }
   }
 }

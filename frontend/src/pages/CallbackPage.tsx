@@ -1,27 +1,29 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const CallbackPage = () => {
+export default function CallbackPage() {
+    const location = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const url = new URL(window.location.href);
-        const code = url.searchParams.get("code");
-        console.log(code)
-        // if (code) {
-        //     // Spring BootのAPIエンドポイントにcodeをPOST
-        //     axios.post("/api/auth/oidc-callback", { code })
-        //         .then(res => {
-        //             // ログインセッションセットなど（例：localStorage.setItem…）
-        //             navigate("/"); // トップに戻るなど
-        //         })
-        //         .catch(e => {
-        //             alert("ログイン失敗");
-        //         });
-        // }
-    }, [navigate]);
+        const params = new URLSearchParams(location.search);
+        const code = params.get("code");
+        if (code) {
+            fetch("/api/callback", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ code }),
+            })
+                .then(res => res.json())
+                .then(data => {
+                    // JWTをlocalStorageやCookieに保存して遷移
+                    // localStorage.setItem('accessToken', data.accessToken)
+                    // localStorage.setItem('refreshToken', data.refreshToken)
+                    // navigate("/"); // or to next page
+                    console.log(data)
+                });
+        }
+    }, [location, navigate]);
 
     return <div>ログイン処理中...</div>;
-};
-
-export default CallbackPage;
+}
