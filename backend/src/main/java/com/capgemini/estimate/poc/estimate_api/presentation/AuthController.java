@@ -105,9 +105,13 @@ public class AuthController {
             "grant_type=authorization_code&client_id=%s&code=%s&redirect_uri=%s",
             clientId, code, redirectUri);
 
+    System.out.println("POST to COGNITO");
+    System.out.println("URL: " + tokenEndpoint);
+    System.out.println("Body: " + requestBody);
     HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
     var response = restTemplate.postForEntity(tokenEndpoint, entity, Map.class);
+    System.out.println("response: " + response);
     if (!response.getStatusCode().is2xxSuccessful()) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Failed to get tokens");
     }
