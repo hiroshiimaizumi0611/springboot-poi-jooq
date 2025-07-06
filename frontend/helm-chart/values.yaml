@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: 635566485987.dkr.ecr.ap-northeast-1.amazonaws.com/react-nginx
-  tag: 9a07a08
+  tag: 1c97122
   pullPolicy: IfNotPresent
 
 service:
