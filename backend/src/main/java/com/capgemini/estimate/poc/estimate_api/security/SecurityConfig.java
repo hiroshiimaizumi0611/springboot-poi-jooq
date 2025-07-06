@@ -25,7 +25,7 @@ public class SecurityConfig {
         .formLogin(formLogin -> formLogin.disable())
         .authorizeHttpRequests(
             auth ->
-                auth.requestMatchers("/api/login", "/api/logout", "/api/refresh")
+                auth.requestMatchers("/api/login", "/api/logout", "/api/refresh", "/api/callback")
                     .permitAll()
                     .anyRequest()
                     .authenticated())
