@@ -91,8 +91,11 @@ public class AuthController {
       "https://estimate-app.auth.ap-northeast-1.amazoncognito.com/oauth2/token";
 
   @PostMapping("/callback")
-  public ResponseEntity<?> handleCognitoCallback(@RequestParam("code") String code) {
-    // ① code からトークン取得
+  public ResponseEntity<?> handleCognitoCallback(@RequestBody Map<String, String> body) {
+    String code = body.get("code");
+    if (code == null) {
+      return ResponseEntity.badRequest().body("codeパラメータがありません");
+    }
     RestTemplate restTemplate = new RestTemplate();
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
