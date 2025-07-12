@@ -18,6 +18,9 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -137,7 +140,6 @@ public class AuthController {
     return Objects.requireNonNull(restTemplate.postForObject(tokenEndpoint, req, Tokens.class));
   }
 
-  // ======= DTO (Lombok 不使用) =======
   @JsonIgnoreProperties(ignoreUnknown = true)
   public static class Tokens {
 
@@ -153,7 +155,6 @@ public class AuthController {
     @JsonProperty("expires_in")
     private long expiresIn;
 
-    /* ゲッター（必要な分だけ） */
     public String getIdToken() {
       return idToken;
     }
@@ -170,7 +171,6 @@ public class AuthController {
       return expiresIn;
     }
 
-    /** JWT から sub を取り出す簡易実装 */
     public String getSub() {
       try {
         String payload = idToken.split("\\.")[1];
@@ -179,6 +179,16 @@ public class AuthController {
       } catch (Exception e) {
         throw new IllegalStateException(e);
       }
+    }
+  }
+
+  @Configuration
+  public class RestConfig {
+
+    @Bean
+    public RestTemplate restTemplate() {
+      RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
+      return restTemplateBuilder.build();
     }
   }
 }
