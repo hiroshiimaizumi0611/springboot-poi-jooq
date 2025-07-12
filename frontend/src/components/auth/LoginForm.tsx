@@ -72,7 +72,11 @@ export default function LoginForm() {
           const state = crypto.randomUUID();
           localStorage.setItem('pkce_state', state);
 
+
           const loginUrl = `${cognitoDomain}/login?response_type=code&client_id=${clientId}` + `&redirect_uri=${redirectUri}&scope=${scope}&state=${state}`;
+          console.log('------------------------------------------------------')
+          console.log(loginUrl)
+          console.log('------------------------------------------------------')
           window.location.href = loginUrl;
         }}
       >
