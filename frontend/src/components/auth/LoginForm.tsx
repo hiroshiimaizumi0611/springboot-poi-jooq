@@ -67,10 +67,20 @@ export default function LoginForm() {
       <button
         className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded px-4 py-2"
         type="button"
-        onClick={() => auth.signinRedirect()}
+        onClick={() => {
+          const cognitoDomain = "https://cognito-idp.ap-northeast-1.amazonaws.com/ap-northeast-1_js0rZmDGL";
+          const clientId = "7n3n3u8mvl07ptvtskoussnm1f";
+          const redirectUri = encodeURIComponent(`https://estimate-app.com/callback`);
+          const scope = encodeURIComponent('openid profile email');
+          const state = crypto.randomUUID();
+          localStorage.setItem('pkce_state', state);
+
+          const loginUrl = `${cognitoDomain}/oauth2/authorize?response_type=code&client_id=${clientId}` + `&redirect_uri=${redirectUri}&scope=${scope}&state=${state}`;
+          window.location.href = loginUrl;
+        }}
       >
         Cognitoでログイン
       </button>
-    </div>
+    </div >
   )
 }
