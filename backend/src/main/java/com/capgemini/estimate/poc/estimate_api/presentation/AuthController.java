@@ -8,7 +8,11 @@ import com.capgemini.estimate.poc.estimate_api.domain.model.RefreshRequest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nimbusds.jwt.JWT;
+import com.nimbusds.jwt.SignedJWT;
+
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.Map;
@@ -104,7 +108,7 @@ public class AuthController {
       "https://estimate-app.auth.ap-northeast-1.amazoncognito.com/oauth2/token";
 
   @PostMapping("/callback")
-  public ResponseEntity<Tokens> callback(@RequestBody Map<String, String> body) {
+  public ResponseEntity<LoginResponse> callback(@RequestBody Map<String, String> body) throws ParseException {
     String code = body.get("code");
 
     MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
@@ -119,7 +123,17 @@ public class AuthController {
 
     Tokens t = postForTokens(form, headers);
 
-    return ResponseEntity.ok(t);
+    var parsedJwt = SignedJWT.parse(t.getIdToken());
+    var claim = parsedJwt.getJWTClaimsSet().toJSONObject();
+    var email = claim.get("email").toString();
+
+      // JWT生成
+    String accessToken = jwtUtil.createToken(email);
+    String refreshToken = UUID.randomUUID().toString();
+
+    // Redisにも保存
+    redisTemplate.opsForValue().set(refreshToken, email, Duration.ofDays(1));
+    return ResponseEntity.ok(new LoginResponse(accessToken, refreshToken));
   }
 
   // ---- リフレッシュ --------------------------------------------

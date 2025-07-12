@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/authStore";
 
 export default function CallbackPage() {
     const location = useLocation();
@@ -16,11 +17,10 @@ export default function CallbackPage() {
             })
                 .then(res => res.json())
                 .then(data => {
-                    // JWTをlocalStorageやCookieに保存して遷移
-                    // localStorage.setItem('accessToken', data.accessToken)
-                    // localStorage.setItem('refreshToken', data.refreshToken)
-                    // navigate("/"); // or to next page
-                    console.log(data)
+                    localStorage.setItem('accessToken', data.accessToken)
+                    localStorage.setItem('refreshToken', data.refreshToken)
+                    useAuthStore.getState().setIsAuthenticated(true)
+                    navigate('/')
                 });
         }
     }, [location, navigate]);
