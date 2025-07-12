@@ -183,7 +183,7 @@ public class AuthController {
   }
 
   @Configuration
-  public class RestConfig {
+  static class RestConfig {
 
     @Bean
     public RestTemplate restTemplate() {
