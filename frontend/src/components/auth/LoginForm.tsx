@@ -4,7 +4,6 @@ import { login } from '../../api/auth'
 import { Button } from '../../components/ui/button'
 import { Input } from '../../components/ui/input'
 import { Loader2 } from 'lucide-react'
-import { useAuth } from 'react-oidc-context'
 
 export default function LoginForm() {
   const [username, setUsername] = useState('')
@@ -12,8 +11,6 @@ export default function LoginForm() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate()
-
-  const auth = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
