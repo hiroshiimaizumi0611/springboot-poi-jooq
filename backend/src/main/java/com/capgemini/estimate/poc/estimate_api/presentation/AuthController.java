@@ -97,8 +97,8 @@ public class AuthController {
     return ResponseEntity.ok(new LoginResponse(newAccessToken, newRefreshToken));
   }
 
-  private final String clientId = "7n3n3u8mvl07ptvtskoussnm1f";
-  private final String clientSecret = "ubo3mf857nrb1drq2i4157pfo9gvb213l9h1b4icgtbeelp5prq";
+  private final String clientId = "j13taan8rcthtpojjsq30c62k";
+  private final String clientSecret = "1hp1gn3ek7rv36o0q4bae2comtoro8eseaf0pkn7uof7eq0ga801";
   private final String redirectUri = "https://estimate-app.com/callback";
   private final String tokenEndpoint =
       "https://estimate-app.auth.ap-northeast-1.amazoncognito.com/oauth2/token";
