@@ -8,7 +8,6 @@ import com.capgemini.estimate.poc.estimate_api.domain.model.RefreshRequest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.SignedJWT;
 
 import java.nio.charset.StandardCharsets;
@@ -47,8 +46,6 @@ public class AuthController {
   @Autowired private JwtUtil jwtUtil;
 
   @Autowired private RedisTemplate<String, String> redisTemplate;
-
-  @Autowired private RestTemplate restTemplate;
 
   static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
@@ -121,36 +118,22 @@ public class AuthController {
     headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
     headers.setBasicAuth(clientId, clientSecret, StandardCharsets.UTF_8);
 
-    Tokens t = postForTokens(form, headers);
+    Tokens tokens = postForTokens(form, headers);
 
-    var parsedJwt = SignedJWT.parse(t.getIdToken());
+    var parsedJwt = SignedJWT.parse(tokens.getIdToken());
     var claim = parsedJwt.getJWTClaimsSet().toJSONObject();
     var email = claim.get("email").toString();
 
-      // JWT生成
     String accessToken = jwtUtil.createToken(email);
     String refreshToken = UUID.randomUUID().toString();
 
-    // Redisにも保存
     redisTemplate.opsForValue().set(refreshToken, email, Duration.ofDays(1));
     return ResponseEntity.ok(new LoginResponse(accessToken, refreshToken));
   }
 
-  // ---- リフレッシュ --------------------------------------------
-  // @PostMapping("/refresh")
-  // public ResponseEntity<Tokens> refresh(@RequestBody Map<String,String> body){
-  //             MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
-  //     form.add("grant_type", "refresh_token");
-  //     form.add("refresh_token", body.get("refreshToken"));
-  //     form.add("client_id", clientId);
-
-  //     HttpHeaders headers = buildHeadersWithBasicAuth();
-  //     Tokens tokens = postForTokens(form, headers);
-  //     return ResponseEntity.ok(tokens);
-  // }
-
   private Tokens postForTokens(MultiValueMap<String, String> form, HttpHeaders h) {
     HttpEntity<MultiValueMap<String, String>> req = new HttpEntity<>(form, h);
+    var restTemplate = new RestTemplate();
     return Objects.requireNonNull(restTemplate.postForObject(tokenEndpoint, req, Tokens.class));
   }
 
@@ -193,16 +176,6 @@ public class AuthController {
       } catch (Exception e) {
         throw new IllegalStateException(e);
       }
-    }
-  }
-
-  @Configuration
-  static class RestConfig {
-
-    @Bean
-    public RestTemplate restTemplate() {
-      RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
-      return restTemplateBuilder.build();
     }
   }
 }
