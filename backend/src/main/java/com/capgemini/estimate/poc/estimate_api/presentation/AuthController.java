@@ -21,9 +21,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -98,11 +96,14 @@ public class AuthController {
     return ResponseEntity.ok(new LoginResponse(newAccessToken, newRefreshToken));
   }
 
-  private final String clientId = "j13taan8rcthtpojjsq30c62k";
-  private final String clientSecret = "1hp1gn3ek7rv36o0q4bae2comtoro8eseaf0pkn7uof7eq0ga801";
-  private final String redirectUri = "https://estimate-app.com/callback";
-  private final String tokenEndpoint =
-      "https://estimate-app.auth.ap-northeast-1.amazoncognito.com/oauth2/token";
+  @Value("${CLIENT_ID}")
+  private String clientId;
+  @Value("${CLIENT_SECRET}")
+  private String clientSecret;
+  @Value("${REDIRECT_URI}")
+  private String redirectUri;
+  @Value("${COGNITO_DOMAIN}")
+  private String cognitoDomain;
 
   @PostMapping("/callback")
   public ResponseEntity<LoginResponse> callback(@RequestBody Map<String, String> body) throws ParseException {
@@ -134,7 +135,7 @@ public class AuthController {
   private Tokens postForTokens(MultiValueMap<String, String> form, HttpHeaders h) {
     HttpEntity<MultiValueMap<String, String>> req = new HttpEntity<>(form, h);
     var restTemplate = new RestTemplate();
-    return Objects.requireNonNull(restTemplate.postForObject(tokenEndpoint, req, Tokens.class));
+    return Objects.requireNonNull(restTemplate.postForObject(cognitoDomain + "/oauth2/token", req, Tokens.class));
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true)
