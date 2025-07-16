@@ -1,7 +1,7 @@
 apiVersion: external-secrets.io/v1
 kind: ClusterSecretStore
 metadata:
-  name: aws-secretsmanager
+  name: aws-secretsmanager-frontend
   namespace: frontend
 spec:
   provider:
