@@ -65,9 +65,9 @@ export default function LoginForm() {
         className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded px-4 py-2"
         type="button"
         onClick={() => {
-          const cognitoDomain = "https://estimate-app.auth.ap-northeast-1.amazoncognito.com";
-          const clientId = "j13taan8rcthtpojjsq30c62k";
-          const redirectUri = encodeURIComponent(`https://estimate-app.com/callback`);
+          const cognitoDomain = process.env.COGNITO_DOMAIN;
+          const clientId = process.env.CLIENT_ID;
+          const redirectUri = encodeURIComponent(process.env.REDIRECT_URI!);
           const scope = encodeURIComponent('openid profile email');
           const state = crypto.randomUUID();
           localStorage.setItem('pkce_state', state);
