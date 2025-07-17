@@ -26,6 +26,9 @@ const CONFIG_MAP: Record<string, OidcConfig> = {
 };
 
 function getOidcConfig(): OidcConfig {
+    console.log('------------------VITE_STAGE-------------------')
+    console.log(import.meta.env.VITE_STAGE)
+    console.log('------------------VITE_STAGE-------------------')
     return CONFIG_MAP[stage] ?? CONFIG_MAP['dev'];
 }
 
