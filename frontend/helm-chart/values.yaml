@@ -10,8 +10,25 @@ service:
   port: 80
 
 env:
-  BACKEND_HOST: backend.backend.svc.cluster.local
-  BACKEND_PORT: "8080"
+- name: BACKEND_HOST
+  value: "ackend.backend.svc.cluster.local"
+- name: BACKEND_PORT
+  value: "8080"
+- name: VITE_CLIENT_ID
+  valueFrom:
+    secretKeyRef:
+      name: "{{ .Release.Name }}-secrets"
+      key: VITE_CLIENT_ID
+- name: VITE_COGNITO_DOMAIN
+  valueFrom:
+    secretKeyRef:
+      name: "{{ .Release.Name }}-secrets"
+      key: VITE_COGNITO_DOMAIN
+- name: VITE_REDIRECT_URI
+  valueFrom:
+    secretKeyRef:
+      name: "{{ .Release.Name }}-secrets"
+      key: VITE_REDIRECT_URI
 
 ingress:
   enabled: true
