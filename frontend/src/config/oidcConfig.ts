@@ -14,21 +14,18 @@ const CONFIG_MAP: Record<string, OidcConfig> = {
         cognitoDomain: 'https://estimate-app.auth.ap-northeast-1.amazoncognito.com',
     },
     'stg': {
-        clientId: 'stg-abcdef1234567890',
-        redirectUri: 'https://stg.example.com/callback',
-        cognitoDomain: 'https://stg-auth.example.com',
+        clientId: '',
+        redirectUri: '',
+        cognitoDomain: '',
     },
     'prod': {
-        clientId: 'prod-fedcba0987654321',
-        redirectUri: 'https://www.example.com/callback',
-        cognitoDomain: 'https://auth.example.com',
+        clientId: '',
+        redirectUri: '',
+        cognitoDomain: '',
     },
 };
 
 function getOidcConfig(): OidcConfig {
-    console.log('------------------VITE_STAGE-------------------')
-    console.log(import.meta.env.VITE_STAGE)
-    console.log('------------------VITE_STAGE-------------------')
     return CONFIG_MAP[stage] ?? CONFIG_MAP['dev'];
 }
 
