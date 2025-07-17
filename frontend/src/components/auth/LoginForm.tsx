@@ -65,9 +65,9 @@ export default function LoginForm() {
         className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded px-4 py-2"
         type="button"
         onClick={() => {
-          const cognitoDomain = process.env.COGNITO_DOMAIN;
-          const clientId = process.env.CLIENT_ID;
-          const redirectUri = encodeURIComponent(process.env.REDIRECT_URI!);
+          const cognitoDomain = process.env.VITE_COGNITO_DOMAIN;
+          const clientId = process.env.VITE_CLIENT_ID;
+          const redirectUri = encodeURIComponent(process.env.VITE_REDIRECT_URI!);
           const scope = encodeURIComponent('openid profile email');
           const state = crypto.randomUUID();
           localStorage.setItem('pkce_state', state);
