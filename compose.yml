@@ -6,6 +6,9 @@ services:
       - ORACLE_PASSWORD=${ORACLE_PASSWORD}
       - APP_USER=${APP_USER}
       - APP_USER_PASSWORD=${APP_USER_PASSWORD}
+      - VITE_CLIENT_ID=${CLIENT_ID}
+      - VITE_COGNITO_DOMAIN=${COGNITO_DOMAIN}
+      - VITE_REDIRECT_URI=${REDIRECT_URI}
     ports:
       - "1521:1521"
     volumes:
