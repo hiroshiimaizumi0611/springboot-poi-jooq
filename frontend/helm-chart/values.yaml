@@ -17,17 +17,17 @@ env:
 - name: VITE_CLIENT_ID
   valueFrom:
     secretKeyRef:
-      name: "{{ .Release.Name }}-secrets"
+      name: frontend-secrets
       key: VITE_CLIENT_ID
 - name: VITE_COGNITO_DOMAIN
   valueFrom:
     secretKeyRef:
-      name: "{{ .Release.Name }}-secrets"
+      name: frontend-secrets
       key: VITE_COGNITO_DOMAIN
 - name: VITE_REDIRECT_URI
   valueFrom:
     secretKeyRef:
-      name: "{{ .Release.Name }}-secrets"
+      name: frontend-secrets
       key: VITE_REDIRECT_URI
 
 ingress:
