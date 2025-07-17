@@ -25,7 +25,6 @@ const CONFIG_MAP: Record<string, OidcConfig> = {
     },
 };
 
-/** 実行中ホスト名から設定を取得 */
 function getOidcConfig(): OidcConfig {
     return CONFIG_MAP[stage] ?? CONFIG_MAP['dev'];
 }
