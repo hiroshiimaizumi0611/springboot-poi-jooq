@@ -11,7 +11,7 @@ service:
 
 env:
 - name: BACKEND_HOST
-  value: "ackend.backend.svc.cluster.local"
+  value: "backend.backend.svc.cluster.local"
 - name: BACKEND_PORT
   value: "8080"
 - name: VITE_CLIENT_ID
