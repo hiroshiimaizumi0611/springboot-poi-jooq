@@ -9,6 +9,7 @@ services:
       - VITE_CLIENT_ID=${CLIENT_ID}
       - VITE_COGNITO_DOMAIN=${COGNITO_DOMAIN}
       - VITE_REDIRECT_URI=${REDIRECT_URI}
+      - VITE_STAGE=${STAGE}
     ports:
       - "1521:1521"
     volumes:

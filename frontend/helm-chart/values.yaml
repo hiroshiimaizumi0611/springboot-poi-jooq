@@ -14,21 +14,8 @@ env:
   value: "backend.backend.svc.cluster.local"
 - name: BACKEND_PORT
   value: "8080"
-- name: VITE_CLIENT_ID
-  valueFrom:
-    secretKeyRef:
-      name: frontend-secrets
-      key: VITE_CLIENT_ID
-- name: VITE_COGNITO_DOMAIN
-  valueFrom:
-    secretKeyRef:
-      name: frontend-secrets
-      key: VITE_COGNITO_DOMAIN
-- name: VITE_REDIRECT_URI
-  valueFrom:
-    secretKeyRef:
-      name: frontend-secrets
-      key: VITE_REDIRECT_URI
+- name: BACKEND_PORT
+  value: "8080"
 
 ingress:
   enabled: true

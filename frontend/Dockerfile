@@ -1,5 +1,6 @@
 # --- Build Stage ---
 FROM node:slim AS build
+ARG VITE_STAGE
 WORKDIR /app
 COPY . .
 RUN npm ci && npm run build

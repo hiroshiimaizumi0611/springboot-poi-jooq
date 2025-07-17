@@ -4,6 +4,7 @@ import { login } from '../../api/auth'
 import { Button } from '../../components/ui/button'
 import { Input } from '../../components/ui/input'
 import { Loader2 } from 'lucide-react'
+import { oidcConfig } from '../../config/oidcConfig'
 
 export default function LoginForm() {
   const [username, setUsername] = useState('')
@@ -25,6 +26,8 @@ export default function LoginForm() {
       setLoading(false);
     }
   }
+
+
 
   return (
     <div>
@@ -65,9 +68,9 @@ export default function LoginForm() {
         className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded px-4 py-2"
         type="button"
         onClick={() => {
-          const cognitoDomain = process.env.VITE_COGNITO_DOMAIN;
-          const clientId = process.env.VITE_CLIENT_ID;
-          const redirectUri = encodeURIComponent(process.env.VITE_REDIRECT_URI!);
+          const cognitoDomain = oidcConfig.cognitoDomain;
+          const clientId = oidcConfig.clientId;
+          const redirectUri = encodeURIComponent(oidcConfig.redirectUri!);
           const scope = encodeURIComponent('openid profile email');
           const state = crypto.randomUUID();
           localStorage.setItem('pkce_state', state);

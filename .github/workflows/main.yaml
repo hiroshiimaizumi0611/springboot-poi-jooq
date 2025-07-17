@@ -61,7 +61,9 @@ jobs:
           TAG: ${{ env.TAG }}
         run: |
           cd frontend
-          docker build -t $ECR_REPO:$TAG .
+          docker build \
+            --build-arg VITE_STAGE=dev \
+            -t $ECR_REPO:$TAG .
           docker push $ECR_REPO:$TAG
           # values.yamlのtagを書き換え
           sed -i "s/^  tag: .*/  tag: $TAG/" helm-chart/values.yaml
