@@ -1,10 +1,10 @@
 import { Navigate, useLocation } from 'react-router-dom'
-import { useAuth } from '../../hooks/useAuth'
+import { useAuthStore } from '../../store/authStore'
 
 export default function RequireAuth({
   children,
 }: { children: React.ReactNode }) {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated } = useAuthStore()
   const location = useLocation()
 
   if (!isAuthenticated) {

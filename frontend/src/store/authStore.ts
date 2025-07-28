@@ -6,6 +6,6 @@ interface AuthStore {
 }
 
 export const useAuthStore = create<AuthStore>(set => ({
-  isAuthenticated: !!localStorage.getItem('accessTokec'),
+  isAuthenticated: !!localStorage.getItem('accessToken'),
   setIsAuthenticated: v => set({ isAuthenticated: v }),
 }))
